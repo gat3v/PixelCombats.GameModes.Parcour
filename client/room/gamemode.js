@@ -2,7 +2,7 @@
 import * as basic from 'pixel_combats/basic';
 import * as room from 'pixel_combats/room';
 import * as teams from './default_teams.js';
-
+try {
 // опции
 const END_OF_MATCH_TIME = 10;
 const VOTE_TIME = 20;
@@ -263,3 +263,7 @@ function SetPlayerSpawn(player, index) {
 
 // запуск игры
 stateProp.Value = GameStateValue;
+}
+catch (e) {
+	room.Ui.GetContext().Hint.Value = e.message;
+}
