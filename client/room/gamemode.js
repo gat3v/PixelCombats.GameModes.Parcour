@@ -118,21 +118,19 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 		if (dynamicAreas == null || dynamicAreas.length == 0 || stateProp.Value == EndOfMatchStateValue) return t.Stop();
 		if (dynamicAreas == null || dynamicAreas.length == 0) return;
 		
-		// перебираем зоны
-		dynamicAreas.forEach(function (a) {
-			/*const { x, y, z } = area.Range.Start;
-			const { x: x1, y: y1, z: z1 } area.Range.End;
-			if (dynamicIndex) {
-				const id = room.MapEditor.GetBlockId(x1, y1, z1);
-				room.MapEditor.SetBlock(x, y, z, id);
-				room.MapEditor.SetBlock(x1, y1, z1, 0);
-			} else {
-				const id = room.MapEditor.GetBlockId(x, y, z);
-				room.MapEditor.SetBlock(x1, y1, z1, id);
-				room.MapEditor.SetBlock(x, y, z, 0);
-			}*/
-			room.Ui.GetContext().Hint.Value = a;
-		});
+		// действия
+		const area = room.AreaService.Get(DynamicBlockAreasTag);
+		const { x, y, z } = area.Range.Start;
+		const { x: x1, y: y1, z: z1 } area.Range.End;
+		if (dynamicIndex) {
+			const id = room.MapEditor.GetBlockId(x1, y1, z1);
+			room.MapEditor.SetBlock(x, y, z, id);
+			room.MapEditor.SetBlock(x1, y1, z1, 0);
+		} else {
+			const id = room.MapEditor.GetBlockId(x, y, z);
+			room.MapEditor.SetBlock(x1, y1, z1, id);
+			room.MapEditor.SetBlock(x, y, z, 0);
+		}
 		dynamicIndex = !dynamicIndex;
 	});
 	dynamicTimer.RestartLoop(3);
