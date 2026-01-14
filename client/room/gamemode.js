@@ -173,7 +173,7 @@ spawnTrigger.OnEnter.Add(function (player, area) {
 mainTimer.OnTimer.Add(function () { start_vote(); });
 
 // создаем лидерборд
-room.LeaderBoard.PlayerLeaderBoardValues = [
+/*room.LeaderBoard.PlayerLeaderBoardValues = [
 	{
 		Value: "Deaths",
 		DisplayName: "Statistics/Deaths",
@@ -190,7 +190,7 @@ room.LeaderBoard.TeamLeaderBoardValue = {
 	Value: LeaderBoardProp,
 	DisplayName: "Statistics/Scores",
 	ShortDisplayName: "Statistics/Scores"
-};
+};*/
 // сортировка игроков
 room.LeaderBoard.PlayersWeightGetter.Set(function (player) {
 	return player.Properties.Get(LeaderBoardProp).Value;
