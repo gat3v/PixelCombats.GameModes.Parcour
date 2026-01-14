@@ -120,22 +120,22 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
                 return;
             }
 
-            const area = room.AreaService.Get(DynamicBlockAreasTag);
-            const start = area.Range.Start;
-            const end = area.Range.End;
-            if (reversed) {
-                const id = room.MapEditor.GetBlockId(end.x, end.y, end.z);
-                room.MapEditor.SetBlock(start.x, start.y, start.z, id);
-                room.MapEditor.SetBlock(end.x, end.y, end.z, 0);
-            } else {
-                const id = room.MapEditor.GetBlockId(start.x, start.y, start.z);
-                room.MapEditor.SetBlock(end.x, end.y, end.z, id);
-                room.MapEditor.SetBlock(start.x, start.y, start.z, 0);
-                
-            }
+            dynamicAreas.forEach(function (area) {
+                const start = area.Range.Start;
+                const end = area.Range.End;
+                if (reversed) {
+                    const id = room.MapEditor.GetBlockId(end.x, end.y, end.z);
+                    room.MapEditor.SetBlock(start.x, start.y, start.z, id);
+                    room.MapEditor.SetBlock(end.x, end.y, end.z, 0);
+                } else {
+                    const id = room.MapEditor.GetBlockId(start.x, start.y, start.z);
+                    room.MapEditor.SetBlock(end.x, end.y, end.z, id);
+                    room.MapEditor.SetBlock(start.x, start.y, start.z, 0);
+                }
+            });
             reversed = !reversed;
         });
-        
+
         dynamicTimer.RestartLoop(3);
     }
 }
