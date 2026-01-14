@@ -109,20 +109,18 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
+    dynamicTrigger.OnEnter.Add(null);
 
     const reversed = 0;
-
-    dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
-    if (dynamicAreas && dynamicAreas.length > 0) {
-        dynamicTimer.OnTimer.Add(function () {
+    if (dynamicAreas.length > 0) {
+        dynamicTimer.OnTimer.Add(function (t) {
             if (stateProp.Value == EndOfMatchStateValue) {
                 dynamicTimer.Stop();
                 return;
             }
 
-            dynamicAreas.forEach(area => {
-                const json = JSON.stringify(area);
-                room.Ui.GetContext().Hint.Value = json;
+            for (let i = 0; i < dynamicAreas.length; i++) {
+                const area = dynamicAreas[i];
                 const start = area.Range.Start;
                 const end = area.Range.End;
                 if (reversed) {
@@ -134,7 +132,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
                     room.MapEditor.SetBlock(end.x, end.y, end.z, id);
                     room.MapEditor.SetBlock(start.x, start.y, start.z, 0);
                 }
-            });
+            }
             reversed = !reversed;
         });
 
