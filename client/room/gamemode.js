@@ -120,7 +120,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
                 return;
             }
 
-            room.Ui.GetContext().Hint.Value = JSON.stringify(room.AreaService.Get(DynamicBlockAreasTag));
+            room.Ui.GetContext().Hint.Value = JSON.stringify(room.AreaService.Get("DynamicTrigger"));
             /*dynamicAreas.forEach(function (area) {
                 const start = area.Range.Start;
                 const end = area.Range.End;
