@@ -114,7 +114,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
     dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
     if (dynamicAreas && dynamicAreas.length > 0) {
-        dynamicTimer.OnEnter.Add(function () {
+        dynamicTimer.OnTimer.Add(function () {
             if (stateProp.Value == EndOfMatchStateValue) {
                 dynamicTimer.Stop();
                 return;
