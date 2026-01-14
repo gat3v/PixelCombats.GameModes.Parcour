@@ -10,10 +10,13 @@ const VOTE_TIME = 20;
 // константы
 const GameStateValue = "Game";
 const EndOfMatchStateValue = "EndOfMatch";
-const EndAreaTag = "parcourend"; 	// тэг зоны конца паркура
+const DynamicBlockAreaTag = "dynamic"; 	// тэг зоны динамического блока
+// const PeriodicBlockAreaTag = "periodic";  // тэг зоны периодического блока
+const EndAreaTag = "parcourend";  // тэг зоны конца паркура
 const SpawnAreasTag = "spawn";	// тэг зон промежуточных спавнов
 const EndTriggerPoints = 1000;	// сколько дается очков за завершение маршрута
 const CurSpawnPropName = "CurSpawn"; // свойство, отвечающее за индекс текущего спавна 0 - дефолтный спавн
+const AddDynamicBlockParameterName = "AddDynamicBlock";  // параметр создания комнаты, отвечающий за добавление динамического блока
 const ViewSpawnsParameterName = "ViewSpawns";	// параметр создания комнаты, отвечающий за визуализацию спавнов
 const ViewEndParameterName = "ViewEnd";	// параметр создания комнаты, отвечающий за визуализацию конца маршрута
 const MaxSpawnsByArea = 25;	// макс спавнов на зону
@@ -21,18 +24,20 @@ const LeaderBoardProp = "Leader"; // свойство для лидерборд�
 
 // постоянные переменные
 const mainTimer = room.Timers.GetContext().Get("Main"); 		// таймер конца игры
+const dynamicTimer = room.Timers.GetContext().Get("Dynamic");  // таймер динамического блока
 var endAreas = room.AreaService.GetByTag(EndAreaTag);		// зоны конца игры
 var spawnAreas = room.AreaService.GetByTag(SpawnAreasTag);	// зоны спавнов
+var dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreaTag); // зоны с динамическим блоком
 const stateProp = room.Properties.GetContext().Get("State");	// свойство состояния
 const inventory = room.Inventory.GetContext();				// контекст инвентаря
 const gameEndAreaColor = new basic.Color(0, 0, 1, 0);	// цвет зоны конца маршрута
 const areaColor = new basic.Color(1, 1, 1, 0);	// цвет зоны
 
+
 // параметры режима
 const MAP_ROTATION = room.GameMode.Parameters.GetBool("MapRotation");
 room.Properties.GetContext().GameModeName.Value = "GameModes/Parcour";
 room.Damage.FriendlyFire = false;
-//room.Map.Rotation = MAP_ROTATION;
 room.BreackGraph.OnlyPlayerBlocksDmg = room.GameMode.Parameters.GetBool("PartialDesruction");
 room.BreackGraph.WeakBlocks = room.GameMode.Parameters.GetBool("LoosenBlocks");
 
@@ -99,6 +104,38 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 	spawnsView.Tags = [SpawnAreasTag];
 	spawnsView.Enable = true;
 }
+
+// настраиваем динамический блок
+if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
+	const dynamicIndex = 0;
+	const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
+	dynamicTrigger.Tags = [DynamicBlockAreaTag];
+	dynamicTrigger.Enable = true;
+
+	dynamicTimer.OnTimer.Add(function (t) {
+		dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreaTag);
+		if (stateProp.Value == EndOfMatchStateValue) return t.Stop();
+		if (dynamicAreas == null || dynamicAreas.length == 0) return;
+		
+		// перебираем зоны
+		dynamicAreas.forEach(function (area) {
+			const { x, y, z } = area.Range.Start;
+			const { x: x1, y: y1, z: z1 } area.Range.End;
+			if (dynamicIndex) {
+				const id = room.MapEditor.GetBlockId(x1, y1, z1);
+				room.MapEditor.SetBlock(x, y, z, id);
+				room.MapEditor.SetBlock(x1, y1, z1, 0);
+			} else {
+				const id = room.MapEditor.GetBlockId(x, y, z);
+				room.MapEditor.SetBlock(x1, y1, z1, id);
+				room.MapEditor.SetBlock(x, y, z, 0);
+			}
+		});
+		dynamicIndex = !dynamicIndex;
+	});
+	dynamicTimer.RestartLoop(3);
+}
+
 
 // настраиваем триггер конца игры
 const endTrigger = room.AreaPlayerTriggerService.Get("EndTrigger");
