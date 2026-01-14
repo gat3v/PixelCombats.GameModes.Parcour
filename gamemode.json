@@ -43,6 +43,11 @@
         "Name": "MapRotation",
         "DisplayName": "GmParams/MapRotation",
         "Default": true
+      },
+      {
+        "Name": "AddDynamicBlock",
+        "DisplayName": "Добавить динамические блоки",
+        "Default": true
       }
     ]
   }
