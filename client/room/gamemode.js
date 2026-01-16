@@ -111,7 +111,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     dynamicTrigger.Enable = true;
     dynamicTrigger.OnEnter.Add(null);
 
-    const reversed = 0;
+    const reversed = false;
     if (dynamicAreas.length > 0) {
         dynamicTimer.OnTimer.Add(function (t) {
             if (stateProp.Value == EndOfMatchStateValue) {
