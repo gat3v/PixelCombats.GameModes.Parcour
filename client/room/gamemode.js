@@ -119,10 +119,10 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
                 return;
             }
 
-            //for (let i = 0; i < dynamicAreas.length; i++) {
-                const area = dynamicAreas[0];
-                const start = area.Range.Start;
-                const end = area.Range.End;
+            for (let i = 0; i < dynamicAreas.length; i++) {
+                const area = dynamicAreas[i];
+                const start = area.Ranges.Start;
+                const end = area.Ranges.End;
                 if (reversed) {
                     const id = room.MapEditor.GetBlockId(end.x, end.y, end.z);
                     room.MapEditor.SetBlock(start.x, start.y, start.z, id);
@@ -132,14 +132,13 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
                     room.MapEditor.SetBlock(end.x, end.y, end.z, id);
                     room.MapEditor.SetBlock(start.x, start.y, start.z, 0);
                 }
-            //}
+            }
             reversed = !reversed;
         });
 
         dynamicTimer.RestartLoop(3);
     }
 }
-
 
 // настраиваем триггер конца игры
 const endTrigger = room.AreaPlayerTriggerService.Get("EndTrigger");
