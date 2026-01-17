@@ -225,13 +225,13 @@ function InitializeMap() {
 
     const area = room.AreaService.Get(DynamicBlockAreasTag);
 
-    if (area == null || area.length == 0) return;
-    for (let i = 0; i < area.length; i++) {
-        const ranges = area[i].Ranges.All;
+    //if (area == null || area.length == 0) return;
+    //for (let i = 0; i < area.length; i++) {
+        const ranges = area.Ranges.All;
         for (let j = 0; j < ranges.length; j++) {
             AllRanges.push(ranges[j]);
         }
-    }
+    //}
 
     const ff = area.Ranges.All;
     room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
