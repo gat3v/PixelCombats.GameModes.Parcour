@@ -106,7 +106,7 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 
 // настраиваем динамический блок
 //if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
-    const dynamicTrigger = room.AreaPlayerTriggerService.Get(DynamicBlockAreasTag);
+    const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
     dynamicTrigger.OnEnter.Add((p) => {
@@ -224,6 +224,7 @@ room.Map.OnLoad.Add(InitializeMap);
 function InitializeMap() {
     endAreas = room.AreaService.GetByTag(EndAreaTag);
     spawnAreas = room.AreaService.GetByTag(SpawnAreasTag);
+    dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
     //log.debug("spawnAreas.length=" + spawnAreas.length);
     // ограничитель
     if (spawnAreas == null || spawnAreas.length == 0) return;
@@ -233,7 +234,7 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
-    room.Ui.GetContext().Hint.Value = spawnAreas.length;
+    room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
 InitializeMap();
 
