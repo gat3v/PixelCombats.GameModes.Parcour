@@ -118,7 +118,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             return;
         }
 
-        room.Ui.GetContext().Hint.Value = AllRanges;
+        room.Ui.GetContext().Hint.Value = JSON.stringify(AllRanges);
         // for (let i = 0; i < dynamicAreas.length; i++) {
         //     const current = dynamicAreas[i];
         //     for (let j = 0; j < current.length; j++) {
@@ -240,7 +240,6 @@ function InitializeMap() {
              }
      }
     // const ff = dynamicAreas.Ranges.All;
-    room.Ui.GetContext().Hint.Value = JSON.stringify(AllRanges);
 }
 InitializeMap();
 
