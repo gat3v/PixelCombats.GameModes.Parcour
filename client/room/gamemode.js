@@ -138,7 +138,6 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             } catch (e) {
                 room.Ui.GetContext().Hint.Value = e.message;
             }
-            }
         });
 
         dynamicTimer.RestartLoop(3);
