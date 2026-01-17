@@ -110,32 +110,33 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
 
-    let reversed = false;
     if (dynamicAreas.length > 0) {
-        dynamicTimer.OnTimer.Add(function (t) {
+        let reversed = false;
+
+        const AllRanges = [];
+        for (let i = 0; i < dynamicAreas.length; i++) {
+            const ranges = dynamicAreas[i].Ranges.All;
+            for (let j = 0; j < ranges.length; j++) {
+                AllRanges.push(ranges[j]);
+            }
+        }
+
+        dynamicTimer.OnTimer.Add(function () {
             if (stateProp.Value == EndOfMatchStateValue) {
                 dynamicTimer.Stop();
                 return;
             }
 
-            
-            for (let i = 0; i < dynamicAreas.length; i++) {
-                const ranges = dynamicAreas[i].Ranges.All;
-                for (let j = 0; j < ranges.length; j++) {
-                    const range = ranges[j];
-                    const start = range.Start;
-                    const end = range.End;
-                    if (reversed) {
-                        const id = room.MapEditor.GetBlockId(end.x, end.y, end.z);
-                        room.MapEditor.SetBlock(start.x, start.y, start.z, id);
-                        room.MapEditor.SetBlock(end.x, end.y, end.z, 0);
-                    } else {
-                        const id = room.MapEditor.GetBlockId(start.x, start.y, start.z);
-                        room.MapEditor.SetBlock(end.x, end.y, end.z, id);
-                        room.MapEditor.SetBlock(start.x, start.y, start.z, 0);
-                    }
-                }
+            for (let i = 0; i < AllRanges.length; i++) {
+                const range = AllRanges[i];
+                const source = reversed ? range.End : range.Start;
+                const target = reversed ? range.Start : range.End;
+
+                const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
+                room.MapEditor.SetBlock(target.x, target.y, target.z, id);
+                room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
             }
+
             reversed = !reversed;
         });
 
