@@ -105,7 +105,6 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 
 // настраиваем динамический блок
 const AllRanges = [];
-const dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
 if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
@@ -230,6 +229,7 @@ function InitializeMap() {
     });
 
     // const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
+    const dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
     for (let i = 0; i < dynamicAreas.length; i++) {
             const current = dynamicAreas[i].Ranges.All;
