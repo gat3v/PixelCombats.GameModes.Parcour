@@ -117,7 +117,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             return;
         }
 
-        room.Ui.GetContext().Hint.Value = AllRanges;
+        room.Ui.GetContext().Hint.Value = AllRanges[0];
         for (let i = 0; i < AllRanges.length; i++) {
             const rangef = AllRanges[i];
             for (let j = 0; j < rangef.length; j++) {
