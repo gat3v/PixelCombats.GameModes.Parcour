@@ -235,7 +235,7 @@ function InitializeMap() {
         return 0;
     });
     dynamicAreas.forEach(function (area) {
-        room.Ui.GetContext().Hint.Value = area.Ranges;
+        room.Ui.GetContext().Hint.Value = area.Ranges.Start;
     });
     // room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
