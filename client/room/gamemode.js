@@ -120,8 +120,9 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
         for (let i = 0; i < AllRanges.length; i++) {
             const range = AllRanges[i];
-            const source = reversed ? range.End : range.Start;
-            const target = reversed ? range.Start : range.End;
+            const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
+            const source = reversed ? end : range.Start;
+            const target = reversed ? range.Start : end;
 
             const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
