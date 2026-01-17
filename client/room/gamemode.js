@@ -119,21 +119,21 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             return;
         }
 
-        // room.Ui.GetContext().Hint.Value = AllRanges;
-        for (let i = 0; i < dynamicAreas.length; i++) {
-            const current = dynamicAreas[i];
-            for (let j = 0; j < current.length; j++) {
-            const range = current[j];
-            room.Ui.GetContext().Hint.Value = current;
-            const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
-            const source = reversed ? range.End : range.Start;
-            const target = reversed ? range.Start : range.End;
+        room.Ui.GetContext().Hint.Value = AllRanges;
+        // for (let i = 0; i < dynamicAreas.length; i++) {
+        //     const current = dynamicAreas[i];
+        //     for (let j = 0; j < current.length; j++) {
+        //     const range = current[j];
+        //     room.Ui.GetContext().Hint.Value = current;
+        //     const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
+        //     const source = reversed ? range.End : range.Start;
+        //     const target = reversed ? range.Start : range.End;
 
-            const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
-            room.MapEditor.SetBlock(target.x, target.y, target.z, id);
-            room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
-            }
-        }
+        //     const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
+        //     room.MapEditor.SetBlock(target.x, target.y, target.z, id);
+        //     room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
+        //     }
+        // }
 
         reversed = !reversed;
     });
@@ -231,9 +231,13 @@ function InitializeMap() {
 
     // const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
-    // for (let i = 0; i < area.length; i++) {
-    //     const cur = area[i].Ranges.All;
-    //     AllRanges = cur
+    for (let i = 0; i < dynamicAreas.length; i++) {
+            const current = dynamicAreas[i];
+            for (let j = 0; j < current.length; j++) {
+                const range = current[j];
+                AllRanges.push(range);
+            }
+    }
     // const ff = area.Ranges.All;
     // // room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
 }
