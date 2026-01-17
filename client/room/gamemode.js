@@ -235,7 +235,7 @@ function InitializeMap() {
         return 0;
     });
     dynamicAreas.forEach(function (area) {
-        room.Ui.GetContext().Hint.ValueJSON.stringify(area);
+        room.Ui.GetContext().Hint.Value = JSON.stringify(area);
     });
     // room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
