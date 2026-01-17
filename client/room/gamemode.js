@@ -124,7 +124,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const current = dynamicAreas[i];
             for (let j = 0; j < current.length; j++) {
             const range = current[j];
-            room.Ui.GetContext().Hint.Value = range;
+            room.Ui.GetContext().Hint.Value = current;
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
             const source = reversed ? range.End : range.Start;
             const target = reversed ? range.Start : range.End;
