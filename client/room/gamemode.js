@@ -229,7 +229,7 @@ function InitializeMap() {
     });
 
     // const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
-    const dynamicAreas = room.AreaService.Get(DynamicBlockAreasTag);
+    const dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
     const keys = Object.keys(dynamicAreas);
     for (let i = 0; i < keys.length; i++) {
