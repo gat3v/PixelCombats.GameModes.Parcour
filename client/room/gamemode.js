@@ -114,7 +114,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
     let reversed = false;
     dynamicTimer.OnTimer.Add(function () {
-        if (stateProp.Value == EndOfMatchStateValue || AllRanges.length == 0) {
+        if (stateProp.Value == EndOfMatchStateValue) {
             dynamicTimer.Stop();
             return;
         }
