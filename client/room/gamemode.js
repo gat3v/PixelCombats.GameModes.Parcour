@@ -234,7 +234,10 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
-    room.Ui.GetContext().Hint.Value = dynamicAreas.length;
+    dynamicAreas.forEach(function (area) {
+        room.Ui.GetContext().Hint.Value = area.Ranges;
+    });
+    // room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
 InitializeMap();
 
