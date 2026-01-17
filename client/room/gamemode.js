@@ -111,7 +111,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
 
-    let reversed = false;
+    let reversed = true;
     dynamicTimer.OnTimer.Add(function () {
         if (stateProp.Value == EndOfMatchStateValue) {
             dynamicTimer.Stop();
@@ -126,7 +126,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const source = reversed ? end : range.Start;
             const target = reversed ? range.Start : end;
 
-            const id = room.MapEditor.GetBlockId(source.x, source.y, source.z) != 0 ? room.MapEditor.GetBlockId(source.x, source.y, source.z) : 0;
+            const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
             room.MapEditor.SetBlock(target.x, target.y, target.z, id);
         // }
