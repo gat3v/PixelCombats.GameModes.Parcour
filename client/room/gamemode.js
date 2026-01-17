@@ -231,16 +231,16 @@ function InitializeMap() {
     // const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
     const dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
-    // const keys = Object.keys(dynamicAreas);
-    // for (let i = 0; i < keys.length; i++) {
-    //         const current = keys[i];
-    //         for (let j = 0; j < current.length; j++) {
-    //             const range = current[j];
-    //             AllRanges.push(range);
-    //         }
-    // }
-    const ff = dynamicAreas.Ranges.All;
-    room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
+    const keys = Object.keys(dynamicAreas);
+    for (let i = 0; i < keys.length; i++) {
+             const current = keys[i].Ranges.All;
+             for (let j = 0; j < current.length; j++) {
+                 const range = current[j];
+                 room.Ui.GetContext().Hint.Value += range; // AllRanges.push(range);
+             }
+     }
+    // const ff = dynamicAreas.Ranges.All;
+    // room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
 }
 InitializeMap();
 
