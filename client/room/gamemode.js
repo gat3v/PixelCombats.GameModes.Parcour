@@ -234,7 +234,7 @@ function InitializeMap() {
 
     const area = room.AreaService.Get(DynamicBlockAreasTag);
 
-    room.Ui.GetContext().Hint.Value = JSON.stringify(area.Ranges);
+    room.Ui.GetContext().Hint.Value = area.Ranges.All;
 }
 InitializeMap();
 
