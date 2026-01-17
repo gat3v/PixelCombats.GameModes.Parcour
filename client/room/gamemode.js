@@ -128,21 +128,22 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
                 return;
             }
 
-            for (let i = 0; i < AllRanges.length; i++) {
-                const range = AllRanges[i];
-                const source = reversed ? range.End : range.Start;
-                const target = reversed ? range.Start : range.End;
+            // for (let i = 0; i < AllRanges.length; i++) {
+            //     const range = AllRanges[i];
+            //     const source = reversed ? range.End : range.Start;
+            //     const target = reversed ? range.Start : range.End;
 
-                const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
-                room.MapEditor.SetBlock(target.x, target.y, target.z, id);
-                room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
-            }
+            //     const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
+            //     room.MapEditor.SetBlock(target.x, target.y, target.z, id);
+            //     room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
+            // }
 
             reversed = !reversed;
         });
 
         dynamicTimer.RestartLoop(3);
     }
+    room.Ui.GetContext().MainTimerId.Value = dynamicTimer.Id;
 // }
 
 // настраиваем триггер конца игры
