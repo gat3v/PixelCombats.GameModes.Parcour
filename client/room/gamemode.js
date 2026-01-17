@@ -225,7 +225,7 @@ function InitializeMap() {
     });
 
     for (let i = 0; i < dynamicAreas.length; i++) {
-        const ranges = dynamicAreas[0].Ranges.All;
+        const ranges = dynamicAreas[i].Ranges.All;
         for (let j = 0; j < ranges.length; j++) {
             AllRanges.push(ranges[j]);
         }
