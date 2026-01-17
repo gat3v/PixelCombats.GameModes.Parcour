@@ -109,6 +109,8 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
     var dynamicTrigger = room.AreaPlayerTriggerService.Get(DynamicBlockAreasTag);
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
+    dynamicTrigger.OnEnter.Add((p) => {
+    });
 
     var darea = room.AreaService.Get(DynamicBlockAreasTag);
     room.Ui.GetContext().Hint.Value = `${darea}`;
