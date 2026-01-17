@@ -110,6 +110,7 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
 
+    room.Ui.GetContext().Hint.Value = dynamicAreas.length;
     if (dynamicAreas.length > 0) {
         let reversed = false;
 
