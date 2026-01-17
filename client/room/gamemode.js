@@ -113,7 +113,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
     let reversed = false;
     dynamicTimer.OnTimer.Add(function () {
-        if (stateProp.Value == EndOfMatchStateValue || dynamicAreas == null || dynamicAreas.length == 0) {
+        if (stateProp.Value == EndOfMatchStateValue || AllRanges.length == 0) {
             dynamicTimer.Stop();
             return;
         }
@@ -125,9 +125,8 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const target = reversed ? range.Start : end;
 
             const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
-            room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
             room.MapEditor.SetBlock(target.x, target.y, target.z, id);
-            room.Ui.GetContext().Hint.Value = `${target} | ${source}`;
+            room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
         }
 
         reversed = !reversed;
@@ -225,6 +224,7 @@ function InitializeMap() {
         return 0;
     });
 
+    if (dynamicAreas == null || dynamicAreas.length == 0) return;
     for (let i = 0; i < dynamicAreas.length; i++) {
         const ranges = dynamicAreas[i].Ranges.All;
         for (let j = 0; j < ranges.length; j++) {
