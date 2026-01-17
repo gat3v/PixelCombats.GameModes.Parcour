@@ -114,13 +114,12 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
         let reversed = false;
 
         const AllRanges = [];
-        for (let i = 0; i < dynamicAreas.length; i++) {
-            const ranges = dynamicAreas[i].Ranges.All;
+        //for (let i = 0; i < dynamicAreas.length; i++) {
+            const ranges = dynamicAreas[0].Ranges.All;
             for (let j = 0; j < ranges.length; j++) {
                 AllRanges.push(ranges[j]);
             }
-        }
-        room.Ui.GetContext().Hint.Value = `${AllRanges.length}`;
+        //}
 
         dynamicTimer.OnTimer.Add(function () {
             room.Ui.GetContext().Hint.Value += '|';
