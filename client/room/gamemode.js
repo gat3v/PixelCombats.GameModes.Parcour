@@ -236,11 +236,11 @@ function InitializeMap() {
              const current = keys[i].Ranges.All;
              for (let j = 0; j < current.length; j++) {
                  const range = current[j];
-                 room.Ui.GetContext().Hint.Value += range; // AllRanges.push(range);
+                 AllRanges.push(range);
              }
      }
     // const ff = dynamicAreas.Ranges.All;
-    // room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
+    room.Ui.GetContext().Hint.Value = JSON.stringify(AllRanges);
 }
 InitializeMap();
 
