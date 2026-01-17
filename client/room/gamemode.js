@@ -104,15 +104,6 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
     spawnsView.Enable = true;
 }
 
-function hint (a) {
-    const g = a;
-    const t = '';
-    g.forEach(d => {
-        t += ` | ${JSON.stingify(d)}`;
-    });
-    room.Ui.GetContext().Hint.Value = t;
-}
-
 // настраиваем динамический блок
 if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
@@ -127,16 +118,16 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const ranges = dynamicAreas[i].Ranges.All;
             for (let j = 0; j < ranges.length; j++) {
                 AllRanges.push(ranges[j]);
-                hint([AllRanges.length, ranges.length, dynamicAreas.length]);
             }
         }
+        
+        room.Ui.GetContext().Hint.Value = AllRanges.length;
 
         dynamicTimer.OnTimer.Add(function () {
             if (stateProp.Value == EndOfMatchStateValue) {
                 dynamicTimer.Stop();
                 return;
             }
-            room.Ui.GetContext().Hint.Value += reversed;
 
             for (let i = 0; i < AllRanges.length; i++) {
                 const range = AllRanges[i];
@@ -149,6 +140,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             }
 
             reversed = !reversed;
+            room.Ui.GetContext().Hint.Value += 1;
         });
 
         dynamicTimer.RestartLoop(3);
