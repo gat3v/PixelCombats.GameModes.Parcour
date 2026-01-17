@@ -233,7 +233,7 @@ function InitializeMap() {
 
     const keys = Object.keys(dynamicAreas);
     for (let i = 0; i < keys.length; i++) {
-             const current = keys[i].Ranges.All;
+             const current = keys[i];
              for (let j = 0; j < current.length; j++) {
                  const range = current[j];
                  AllRanges.push(range);
