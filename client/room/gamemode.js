@@ -126,6 +126,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
             room.MapEditor.SetBlock(target.x, target.y, target.z, id);
+            room.Ui.GetContext().Hint.Value = `${target} | ${source}`;
         }
 
         reversed = !reversed;
