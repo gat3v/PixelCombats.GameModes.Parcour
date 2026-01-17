@@ -105,7 +105,6 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 
 // настраиваем динамический блок
 const AllRanges = [];
-const area = room.AreaService.Get(DynamicBlockAreasTag);
 
 if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
@@ -119,9 +118,10 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             return;
         }
 
+        const area = room.AreaService.Get(DynamicBlockAreasTag);
         //room.Ui.GetContext().Hint.Value = JSON.stringify(AllRanges);
         // for (let i = 0; i < AllRanges.length; i++) {
-            const range = area[0].Ranges.All[0];
+            const range = area.Ranges.All[1];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
             const source = reversed ? end : range.Start;
             const target = reversed ? range.Start : end;
