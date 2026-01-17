@@ -105,6 +105,8 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 
 // настраиваем динамический блок
 const AllRanges = [];
+const dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
+
 if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
@@ -117,9 +119,11 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             return;
         }
 
-        room.Ui.GetContext().Hint.Value = AllRanges;
-        for (let i = 0; i < AllRanges.length; i++) {
-            const range = AllRanges[i];
+        // room.Ui.GetContext().Hint.Value = AllRanges;
+        for (let i = 0; i < dynamicAreas.length; i++) {
+            const current = dynamicAreas[i];
+            for (let j = 0; j < current.length; j++) {
+            const range = current[j];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
             const source = reversed ? range.End : range.Start;
             const target = reversed ? range.Start : range.End;
@@ -127,6 +131,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             room.MapEditor.SetBlock(target.x, target.y, target.z, id);
             room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
+            }
         }
 
         reversed = !reversed;
@@ -223,21 +228,13 @@ function InitializeMap() {
         return 0;
     });
 
-    const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
+    // const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
-    //if (area == null || area.length == 0) return;
-    // const keys = Object.values(area);
-    for (let i = 0; i < area.length; i++) {
-        const area1 = area[i];
-        const ranges = area1.Ranges.All;
-        for (let j = 0; j < ranges.length; j++) {
-            AllRanges.push(ranges[j]);
-            room.Ui.GetContext().Hint.Value += ranges[j];
-        }
-    }
-
-    const ff = area.Ranges.All;
-    // room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
+    // for (let i = 0; i < area.length; i++) {
+    //     const cur = area[i].Ranges.All;
+    //     AllRanges = cur
+    // const ff = area.Ranges.All;
+    // // room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
 }
 InitializeMap();
 
