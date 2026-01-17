@@ -26,7 +26,6 @@ const mainTimer = room.Timers.GetContext().Get("Main");         // таймер 
 const dynamicTimer = room.Timers.GetContext().Get("Dynamic");  // таймер динамического блока
 var endAreas = room.AreaService.GetByTag(EndAreaTag);        // зоны конца игры
 var spawnAreas = room.AreaService.GetByTag(SpawnAreasTag);    // зоны спавнов
-var dynamicAreas = room.AreaService.Get(DynamicBlockAreasTag); // зоны с динамическим блоком
 const stateProp = room.Properties.GetContext().Get("State");    // свойство состояния
 const inventory = room.Inventory.GetContext();                // контекст инвентаря
 const gameEndAreaColor = new basic.Color(0, 0, 1, 0);    // цвет зоны конца маршрута
@@ -121,8 +120,8 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         for (let i = 0; i < AllRanges.length; i++) {
             const range = AllRanges[i];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
-            const source = reversed ? end : range.Start;
-            const target = reversed ? range.Start : end;
+            const source = reversed ? range.End : range.Start;
+            const target = reversed ? range.Start : range.End;
 
             const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             room.MapEditor.SetBlock(target.x, target.y, target.z, id);
@@ -233,7 +232,7 @@ function InitializeMap() {
         }
     }
 
-    const ff = area.Ranges.All;
+    const ff = area[0].Ranges.All;
     room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
 }
 InitializeMap();
