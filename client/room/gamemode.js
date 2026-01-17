@@ -232,9 +232,9 @@ function InitializeMap() {
         }
     }
 
-    const d = room.AreaService.Get(DynamicBlockAreasTag);
+    const area = room.AreaService.Get(DynamicBlockAreasTag);
 
-    room.Ui.GetContext().Hint.Value = d;
+    room.Ui.GetContext().Hint.Value = area.Ranges;
 }
 InitializeMap();
 
