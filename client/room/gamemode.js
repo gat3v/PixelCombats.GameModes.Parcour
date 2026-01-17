@@ -66,7 +66,7 @@ function start_vote() {
 }
 
 // вывод подсказки
-room.Ui.GetContext().Hint.Value = "Hint/GoParcour";
+// room.Ui.GetContext().Hint.Value = "Hint/GoParcour";
 
 // настраиваем игровые состояния
 stateProp.OnValue.Add(OnState);
@@ -109,7 +109,6 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
-    dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
     if (dynamicAreas.length > 0) {
         let reversed = false;
@@ -119,6 +118,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const ranges = dynamicAreas[i].Ranges.All;
             for (let j = 0; j < ranges.length; j++) {
                 AllRanges.push(ranges[j]);
+                room.Ui.GetContext().Hint.Value = `${JSON.stringify(ranges[j].Start)}, ${JSON.stringify(ranges[j].End)}, ${AllRanges.length}`;
             }
         }
 
@@ -224,7 +224,6 @@ function InitializeMap() {
     endAreas = room.AreaService.GetByTag(EndAreaTag);
     spawnAreas = room.AreaService.GetByTag(SpawnAreasTag);
     dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
-    //log.debug("spawnAreas.length=" + spawnAreas.length);
     // ограничитель
     if (spawnAreas == null || spawnAreas.length == 0) return;
     // сортировка зон
@@ -233,7 +232,6 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
-    room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
 InitializeMap();
 
