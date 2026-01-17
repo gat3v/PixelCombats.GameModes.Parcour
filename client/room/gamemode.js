@@ -227,7 +227,7 @@ function InitializeMap() {
 
     //if (area == null || area.length == 0) return;
     //for (let i = 0; i < area.length; i++) {
-        const ranges = area[1].Ranges.All;
+        const ranges = area.Ranges.All;
         for (let j = 0; j < ranges.length; j++) {
             AllRanges.push(ranges[j]);
         }
