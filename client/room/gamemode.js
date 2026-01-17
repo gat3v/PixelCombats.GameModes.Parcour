@@ -105,15 +105,16 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 }
 
 // настраиваем динамический блок
-if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
-    const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
+//if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
+    var dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
-    dynamicTrigger.OnEnter.Add(null);
-    room.Ui.GetContext().Hint.Value = `${dynamicAreas.length}`;
+
+    var darea = room.AreaService.Get(DynamicBlockAreasTag);
+    room.Ui.GetContext().Hint.Value = `${darea}`;
 
     let reversed = false;
-    if (dynamicAreas.length > 0) {
+    /*if (dynamicAreas.length > 0) {
         dynamicTimer.OnTimer.Add(function (t) {
             if (stateProp.Value == EndOfMatchStateValue) {
                 dynamicTimer.Stop();
@@ -143,8 +144,8 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         });
 
         dynamicTimer.RestartLoop(3);
-    }
-}
+    }*/
+//}
 
 // настраиваем триггер конца игры
 const endTrigger = room.AreaPlayerTriggerService.Get("EndTrigger");
