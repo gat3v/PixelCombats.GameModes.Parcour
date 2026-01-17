@@ -234,7 +234,7 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
-    room.Ui.GetContext().Hint.Value = dynamicAreas[0].Ranges.Start;
+    room.Ui.GetContext().Hint.Value = dynamicAreas[0].Ranges.All[0].Start;
 
     // room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
