@@ -232,7 +232,7 @@ function InitializeMap() {
     // const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
     for (let i = 0; i < dynamicAreas.length; i++) {
-            const current = dynamicAreas[i];
+            const current = dynamicAreas[i].Ranges.All;
             for (let j = 0; j < current.length; j++) {
                 const range = current[j];
                 AllRanges.push(range);
