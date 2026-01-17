@@ -234,9 +234,8 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
-    dynamicAreas.forEach(function (area) {
-        room.Ui.GetContext().Hint.Value = JSON.stringify(area);
-    });
+    room.Ui.GetContext().Hint.Value = dynaicAreas[0].Ranges.Start;
+
     // room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
 InitializeMap();
