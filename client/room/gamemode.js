@@ -105,47 +105,36 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 }
 
 // настраиваем динамический блок
-// if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
+if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
 
-    // room.Ui.GetContext().Hint.Value = dynamicAreas.length;
-    if (dynamicAreas.length > 0) {
-        let reversed = false;
+    const AllRanges = [];
 
-        const AllRanges = [];
-        //for (let i = 0; i < dynamicAreas.length; i++) {
-            const ranges = dynamicAreas[0].Ranges.All;
-            for (let j = 0; j < ranges.length; j++) {
-                AllRanges.push(ranges[j]);
-            }
-        //}
+    let reversed = false;
+    dynamicTimer.OnTimer.Add(function () {
+        if (stateProp.Value == EndOfMatchStateValue || dynamicAreas == null || dynamicAreas.length == 0) {
+            dynamicTimer.Stop();
+            return;
+        }
 
-        dynamicTimer.OnTimer.Add(function () {
-            room.Ui.GetContext().Hint.Value += '|';
-            if (stateProp.Value == EndOfMatchStateValue) {
-                dynamicTimer.Stop();
-                return;
-            }
+        for (let i = 0; i < AllRanges.length; i++) {
+            const range = AllRanges[i];
+            const source = reversed ? range.End : range.Start;
+            const target = reversed ? range.Start : range.End;
 
-            // for (let i = 0; i < AllRanges.length; i++) {
-            //     const range = AllRanges[i];
-            //     const source = reversed ? range.End : range.Start;
-            //     const target = reversed ? range.Start : range.End;
+            const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
+            room.MapEditor.SetBlock(target.x, target.y, target.z, id);
+            room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
+        }
 
-            //     const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
-            //     room.MapEditor.SetBlock(target.x, target.y, target.z, id);
-            //     room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
-            // }
+        reversed = !reversed;
+    });
 
-            reversed = !reversed;
-        });
-
-        dynamicTimer.RestartLoop(3);
-    }
+    dynamicTimer.RestartLoop(3);
     room.Ui.GetContext().MainTimerId.Value = dynamicTimer.Id;
-// }
+}
 
 // настраиваем триггер конца игры
 const endTrigger = room.AreaPlayerTriggerService.Get("EndTrigger");
@@ -234,6 +223,13 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
+
+    for (let i = 0; i < dynamicAreas.length; i++) {
+        const ranges = dynamicAreas[0].Ranges.All;
+        for (let j = 0; j < ranges.length; j++) {
+            AllRanges.push(ranges[j]);
+        }
+    }
 
     room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
