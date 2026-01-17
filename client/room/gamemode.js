@@ -113,7 +113,8 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
     });
 
     const darea = room.AreaService.Get(EndAreaTag);
-    room.Ui.GetContext().Hint.Value = `${endAreas}`;
+    const hhs = JSON.stringify(room.AreaService.GetByTag(EndAreaTag));
+    room.Ui.GetContext().Hint.Value = `${hhs}`;
 
     let reversed = false;
     /*if (dynamicAreas.length > 0) {
