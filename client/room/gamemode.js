@@ -119,6 +119,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
                 return;
             }
 
+            try {
             for (let i = 0; i < dynamicAreas.length; i++) {
                 const area = dynamicAreas[i];
                 const start = area.Ranges.Start;
@@ -134,6 +135,10 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
                 }
             }
             reversed = !reversed;
+            } catch (e) {
+                room.Ui.GetContext().Hint.Value = e.message;
+            }
+            }
         });
 
         dynamicTimer.RestartLoop(3);
