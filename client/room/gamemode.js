@@ -223,7 +223,7 @@ function InitializeMap() {
         return 0;
     });
 
-    const area = room.AreaService.Get(DynamicBlockAreasTag);
+    const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
 
     //if (area == null || area.length == 0) return;
     // const keys = Object.values(area);
