@@ -125,7 +125,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             const range = area.Ranges.All[0];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 };
             const source = reverse && room.MapEditor.GetBlockId(end.x, end.y, end.z) != 0 ? end : range.Start;
-            const target = reverse  && room.MapEditor.GetBlockId(end.x, end.y, end.z) == 0 ? range.Start : end;
+            const target = reverse ? range.Start : end;
 
             const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
