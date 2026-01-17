@@ -112,10 +112,6 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
     dynamicTrigger.OnEnter.Add((p) => {
     });
 
-    const darea = room.AreaService.Get(EndAreaTag);
-    const hhs = JSON.stringify(room.AreaService.GetByTag(EndAreaTag));
-    room.Ui.GetContext().Hint.Value = `${hhs}`;
-
     let reversed = false;
     /*if (dynamicAreas.length > 0) {
         dynamicTimer.OnTimer.Add(function (t) {
@@ -237,6 +233,7 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
+    room.Ui.GetContext().Hint.Value = spawnAreas.length;
 }
 InitializeMap();
 
