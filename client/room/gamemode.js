@@ -26,7 +26,7 @@ const mainTimer = room.Timers.GetContext().Get("Main");         // таймер 
 const dynamicTimer = room.Timers.GetContext().Get("Dynamic");  // таймер динамического блока
 var endAreas = room.AreaService.GetByTag(EndAreaTag);        // зоны конца игры
 var spawnAreas = room.AreaService.GetByTag(SpawnAreasTag);    // зоны спавнов
-var dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag); // зоны с динамическим блоком
+var dynamicAreas = room.AreaService.Get(DynamicBlockAreasTag); // зоны с динамическим блоком
 const stateProp = room.Properties.GetContext().Get("State");    // свойство состояния
 const inventory = room.Inventory.GetContext();                // контекст инвентаря
 const gameEndAreaColor = new basic.Color(0, 0, 1, 0);    // цвет зоны конца маршрута
@@ -214,7 +214,6 @@ room.Map.OnLoad.Add(InitializeMap);
 function InitializeMap() {
     endAreas = room.AreaService.GetByTag(EndAreaTag);
     spawnAreas = room.AreaService.GetByTag(SpawnAreasTag);
-    dynamicAreas = room.AreaService.GetByTag(DynamicBlockAreasTag);
     // ограничитель
     if (spawnAreas == null || spawnAreas.length == 0) return;
     // сортировка зон
