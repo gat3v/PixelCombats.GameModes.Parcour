@@ -232,11 +232,12 @@ function InitializeMap() {
         const ranges = area1.Ranges.All;
         for (let j = 0; j < ranges.length; j++) {
             AllRanges.push(ranges[j]);
+            room.Ui.GetContext().Hint.Value += ranges[j];
         }
     }
 
     const ff = area.Ranges.All;
-    room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
+    // room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
 }
 InitializeMap();
 
