@@ -118,6 +118,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         }
 
         for (let i = 0; i < AllRanges.length; i++) {
+            room.Ui.GetContext().Hint.Value = AllRanges[i];
             const range = AllRanges[i];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
             const source = reversed ? range.End : range.Start;
@@ -232,7 +233,7 @@ function InitializeMap() {
         }
     }
 
-    const ff = area[0].Ranges.All;
+    const ff = area.Ranges.All;
     room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
 }
 InitializeMap();
