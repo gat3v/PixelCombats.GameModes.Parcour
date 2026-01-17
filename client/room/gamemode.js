@@ -232,7 +232,9 @@ function InitializeMap() {
         }
     }
 
-    room.Ui.GetContext().Hint.Value = dynamicAreas.length;
+    const d = room.AreaService.Get(DynamicBlockAreasTag);
+
+    room.Ui.GetContext().Hint.Value = JSON.stringify(d);
 }
 InitializeMap();
 
