@@ -227,12 +227,13 @@ function InitializeMap() {
 
     //if (area == null || area.length == 0) return;
     // const keys = Object.values(area);
-    // for (let i = 0; i < keys.length; i++) {
-        const ranges = area.Ranges.All;
+    for (let i = 0; i < area.length; i++) {
+        const area1 = area[i];
+        const ranges = area1.Ranges.All;
         for (let j = 0; j < ranges.length; j++) {
             AllRanges.push(ranges[j]);
         }
-    //}
+    }
 
     const ff = area.Ranges.All;
     room.Ui.GetContext().Hint.Value = JSON.stringify(ff);
