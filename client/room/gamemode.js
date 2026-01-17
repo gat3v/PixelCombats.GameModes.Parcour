@@ -112,7 +112,7 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
     dynamicTrigger.OnEnter.Add((p) => {
     });
 
-    const darea = room.AreaService.Get(DynamicBlockAreasTag);
+    const darea = room.AreaService.Get(EndAreaTag);
     room.Ui.GetContext().Hint.Value = `${darea}`;
 
     let reversed = false;
