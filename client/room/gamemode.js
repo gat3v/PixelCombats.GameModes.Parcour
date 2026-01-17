@@ -105,46 +105,43 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 }
 
 // настраиваем динамический блок
-//if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
+if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
-    dynamicTrigger.OnEnter.Add((p) => {
-    });
 
     let reversed = false;
-    /*if (dynamicAreas.length > 0) {
+    if (dynamicAreas.length > 0) {
         dynamicTimer.OnTimer.Add(function (t) {
             if (stateProp.Value == EndOfMatchStateValue) {
                 dynamicTimer.Stop();
                 return;
             }
 
-            try {
-            //for (let i = 0; i < dynamicAreas.length; i++) {
-                const area = dynamicAreas[0];
-                const start = area.Ranges.Start;
-                const end = area.Ranges.End;
-                room.Ui.GetContext().Hint.Value = `${area}, ${dynamicAreas.length}, ${start}`;
-                if (reversed) {
-                    const id = room.MapEditor.GetBlockId(end.x, end.y, end.z);
-                    room.MapEditor.SetBlock(start.x, start.y, start.z, id);
-                    room.MapEditor.SetBlock(end.x, end.y, end.z, 0);
-                } else {
-                    const id = room.MapEditor.GetBlockId(start.x, start.y, start.z);
-                    room.MapEditor.SetBlock(end.x, end.y, end.z, id);
-                    room.MapEditor.SetBlock(start.x, start.y, start.z, 0);
+            
+            for (let i = 0; i < dynamicAreas.length; i++) {
+                const ranges = dynamicAreas[i].Ranges.All;
+                for (let j = 0; j < ranges.length; j++) {
+                    const range = ranges[j];
+                    const start = range.Start;
+                    const end = range.End;
+                    if (reversed) {
+                        const id = room.MapEditor.GetBlockId(end.x, end.y, end.z);
+                        room.MapEditor.SetBlock(start.x, start.y, start.z, id);
+                        room.MapEditor.SetBlock(end.x, end.y, end.z, 0);
+                    } else {
+                        const id = room.MapEditor.GetBlockId(start.x, start.y, start.z);
+                        room.MapEditor.SetBlock(end.x, end.y, end.z, id);
+                        room.MapEditor.SetBlock(start.x, start.y, start.z, 0);
+                    }
                 }
-            //}
-            reversed = !reversed;
-            } catch (e) {
-                room.Ui.GetContext().Hint.Value = e.message;
             }
+            reversed = !reversed;
         });
 
         dynamicTimer.RestartLoop(3);
-    }*/
-//}
+    }
+}
 
 // настраиваем триггер конца игры
 const endTrigger = room.AreaPlayerTriggerService.Get("EndTrigger");
@@ -234,9 +231,6 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
-    room.Ui.GetContext().Hint.Value = dynamicAreas[0].Ranges.All[0].Start;
-
-    // room.Ui.GetContext().Hint.Value = dynamicAreas.length;
 }
 InitializeMap();
 
