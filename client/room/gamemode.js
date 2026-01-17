@@ -111,7 +111,8 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
 
-    let reversed = true;
+    let reverse = false;
+
     dynamicTimer.OnTimer.Add(function () {
         if (stateProp.Value == EndOfMatchStateValue) {
             dynamicTimer.Stop();
@@ -122,9 +123,9 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         room.Ui.GetContext().Hint.Value = JSON.stringify(area.Ranges.All[2]);
         // for (let i = 0; i < AllRanges.length; i++) {
             const range = area.Ranges.All[0];
-            const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 }; 
-            const source = reversed ? end : range.Start;
-            const target = reversed ? range.Start : end;
+            const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 };
+            const source = reverse && room.MapEditor.GetBlockId(end.x, end.y, end.z) != 0 ? end : range.Start;
+            const target = reverse  && room.MapEditor.GetBlockId(end.x, end.y, end.z) == 0 ? range.Start : end;
 
             const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
@@ -224,19 +225,6 @@ function InitializeMap() {
         if (a.Name < b.Name) return -1;
         return 0;
     });
-
-    // const area = room.AreaService.GetByTag(DynamicBlockAreasTag);
-    // const dynamicAreas = room.AreaService.Get(DynamicBlockAreasTag);
-
-    // const keys = Object.keys(dynamicAreas);
-    // for (let i = 0; i < keys.length; i++) {
-    //          const current = keys[i].Ranges.All;
-    //          for (let j = 0; j < current.length; j++) {
-    //              const range = current[j];
-    //              AllRanges.push(range);
-    //          }
-    //  }
-    // const ff = dynamicAreas.Ranges.All;
 }
 InitializeMap();
 
