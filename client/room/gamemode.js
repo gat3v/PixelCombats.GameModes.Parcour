@@ -106,7 +106,7 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 
 // настраиваем динамический блок
 //if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
-    var dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
+    var dynamicTrigger = room.AreaPlayerTriggerService.Get(DynamicBlockAreasTag);
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
 
