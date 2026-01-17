@@ -124,12 +124,14 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         // for (let i = 0; i < AllRanges.length; i++) {
             const range = area.Ranges.All[0];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 };
-            const source = reverse && room.MapEditor.GetBlockId(end.x, end.y, end.z) != 0 ? end : range.Start;
+            const 
+            const source = reverse ? end : range.Start;
             const target = reverse ? range.Start : end;
 
-            const id = room.MapEditor.GetBlockId(source.x, source.y, source.z);
-            room.MapEditor.SetBlock(source.x, source.y, source.z, 0);
-            room.MapEditor.SetBlock(target.x, target.y, target.z, id);
+            const sourceid = room.MapEditor.GetBlockId(source.x, source.y, source.z);
+            const targetid = room.MapEditor.GetBlockId(target.x, target.y, target.z);
+            room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
+            room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
         // }
 
         reversed = !reversed;
