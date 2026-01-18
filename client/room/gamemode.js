@@ -162,8 +162,8 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const targetid = room.MapEditor.GetBlockId(target.x, target.y, target.z);
 
     if (sourceid !== targetid) {
-        room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
-        room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
+        room.MapEditor.SetBlock(source.x, source.y, source.z, 1);
+        room.MapEditor.SetBlock(target.x, target.y, target.z, 28);
     }
         }
 
