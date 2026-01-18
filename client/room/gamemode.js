@@ -106,6 +106,33 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 // настраиваем динамический блок
 const AllRanges = [];
 
+function diagonal(start, end, direction = { x: 1, y: 0, z: 1 }) {
+    const size = {
+        x: Math.abs(end.x - start.x),
+        y: Math.abs(end.y - start.y),
+        z: Math.abs(end.z - start.z)
+    };
+
+    const offset = {
+        x: size.x * (direction.x || 0),
+        y: size.y * (direction.y || 0),
+        z: size.z * (direction.z || 0)
+    };
+
+    return {
+        start: {
+            x: start.x + offset.x,
+            y: start.y + offset.y,
+            z: start.z + offset.z
+        },
+        end: {
+            x: end.x + offset.x,
+            y: end.y + offset.y,
+            z: end.z + offset.z
+        }
+    };
+}
+
 if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
@@ -124,13 +151,16 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         for (let i = 0; i < area.Ranges.All.length; i++) {
             const range = area.Ranges.All[i];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 };
-            const source = reverse ? range.End : range.Start;
-            const target = reverse ? range.Start : range.End;
+            const source = reverse ? end : range.Start;
+            const target = reverse ? range.Start : end;
 
             const sourceid = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             const targetid = room.MapEditor.GetBlockId(target.x, target.y, target.z);
-            room.MapEditor.SetBlock(source.x, source.y, source.z, 28);
-            room.MapEditor.SetBlock(target.x, target.y, target.z, 1);
+            if (room.MapEditor.GetBlockId(range.Start.x, range.Start.y, range.Start.z) == 0 && room.MapEditor.GetBlockId(end.x, end.y, end.z) == 0) {
+                const cord = diagonal(range.Start, range.End);
+                room.MapEditor.SetBlock(cord.start.x, cord.start.y, cord.start.z, 1);
+                room.MapEditor.SetBlock(cord.end.x, cord.end.y, cord.end.z, 28);
+            }
         }
 
         reverse = !reverse;
