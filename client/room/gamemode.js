@@ -120,19 +120,19 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         }
 
         const area = room.AreaService.Get(DynamicBlockAreasTag);
-        room.Ui.GetContext().Hint.Value = JSON.stringify(area.Ranges.All[2]);
+        room.Ui.GetContext().Hint.Value = JSON.stringify(area.Ranges.All[0]);
         for (let i = 0; i < area.Ranges.All.length; i++) {
             const range = area.Ranges.All[i];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 };
-            const source = reverse ? end : range.Start;
-            const target = reverse ? range.Start : end;
+            const source = reverse ? range.End : range.Start;
+            const target = reverse ? range.Start : range.End;
 
             const sourceid = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             const targetid = room.MapEditor.GetBlockId(target.x, target.y, target.z);
-            //room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
-            //room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
-            room.MapEditor.SetBlock(range.Start.x, range.Start.y, range.Start.z, 1);
-            room.MapEditor.SetBlock(range.End.x, range.End.y, range.End.z, 28);
+            room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
+            room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
+            //room.MapEditor.SetBlock(range.Start.x, range.Start.y, range.Start.z, 1);
+            //room.MapEditor.SetBlock(range.End.x, range.End.y, range.End.z, 28);
         }
 
         reverse = !reverse;
