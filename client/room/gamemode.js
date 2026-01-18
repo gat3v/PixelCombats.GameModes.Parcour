@@ -121,7 +121,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
         const area = room.AreaService.Get(DynamicBlockAreasTag);
         room.Ui.GetContext().Hint.Value = JSON.stringify(area.Ranges.All[0]);
-        for (let i = 0; i < area.Ranges.All.length; i++) {
+        /*for (let i = 0; i < area.Ranges.All.length; i++) {
             const range = area.Ranges.All[i];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 };
             const source = reverse ? range.End : range.Start;
@@ -133,6 +133,38 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             //room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
             room.MapEditor.SetBlock(range.Start.x, range.Start.y, range.Start.z, 1);
             room.MapEditor.SetBlock(end.x, end.y, end.z, 28);
+        }*/
+        for (let i = 0; i < area.Ranges.All.length; i++) {
+    const range = area.Ranges.All[i];
+    const s = range.Start;
+    const sz = range.Size; // Используем размер для точности
+
+    // 1. Точка Start (всегда округляем вниз для безопасности)
+    const realStart = {
+        x: Math.floor(s.x),
+        y: Math.floor(s.y),
+        z: Math.floor(s.z)
+    };
+
+    // 2. Вычисляем правильный End для X и Z
+    // Формула: Начало + Размер - Направление (1 или -1)
+    const realEnd = {
+        x: Math.floor(s.x + sz.x - Math.sign(sz.x)), 
+        y: Math.floor(range.End.y - 1), // Y оставляем как у тебя было (минус 1)
+        z: Math.floor(s.z + sz.z - Math.sign(sz.z))
+    };
+
+    // 3. Дальше твой стандартный обмен
+    const source = reverse ? realEnd : realStart;
+    const target = reverse ? realStart : realEnd;
+
+    const sourceid = room.MapEditor.GetBlockId(source.x, source.y, source.z);
+    const targetid = room.MapEditor.GetBlockId(target.x, target.y, target.z);
+
+    if (sourceid !== targetid) {
+        room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
+        room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
+    }
         }
 
         reverse = !reverse;
