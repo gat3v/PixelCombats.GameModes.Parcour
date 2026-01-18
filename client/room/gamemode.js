@@ -121,7 +121,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
         const area = room.AreaService.Get(DynamicBlockAreasTag);
         room.Ui.GetContext().Hint.Value = JSON.stringify(area.Ranges.All[0]);
-        /*for (let i = 0; i < area.Ranges.All.length; i++) {
+        for (let i = 0; i < area.Ranges.All.length; i++) {
             const range = area.Ranges.All[i];
             const end = { x: range.End.x - 1, y: range.End.y - 1, z: range.End.z - 1 };
             const source = reverse ? range.End : range.Start;
@@ -129,64 +129,9 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
             const sourceid = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             const targetid = room.MapEditor.GetBlockId(target.x, target.y, target.z);
-            //room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
-            //room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
-            room.MapEditor.SetBlock(range.Start.x, range.Start.y, range.Start.z, 1);
-            room.MapEditor.SetBlock(end.x, end.y, end.z, 28);
-        }*/
-        // Внутри таймера
-const area = room.AreaService.Get(DynamicBlockAreasTag);
-const editor = room.MapEditor;
-
-// 1. Настройка смещения (куда именно "вбок" двигаем соседа)
-// Если нужно двигать по X, меняй x: 1. Если по Z — меняй z: 1.
-const offset = { x: 1, y: 0, z: 0 }; 
-
-for (let i = 0; i < area.Ranges.All.length; i++) {
-    const range = area.Ranges.All[i];
-
-    // Базовые координаты (Твои оригинальные точки из редактора)
-    const A = { x: Math.floor(range.Start.x), y: Math.floor(range.Start.y), z: Math.floor(range.Start.z) };
-    const B = { x: Math.floor(range.End.x - 1), y: Math.floor(range.End.y - 1), z: Math.floor(range.End.z - 1) };
-
-    // Соседние координаты (Смещенные на offset)
-    const A_neighbor = { x: A.x + offset.x, y: A.y + offset.y, z: A.z + offset.z };
-    const B_neighbor = { x: B.x + offset.x, y: B.y + offset.y, z: B.z + offset.z };
-
-    // Проверяем наличие блока в базовом Старте
-    const idA = editor.GetBlockId(A.x, A.y, A.z);
-
-    if (idA !== 0) {
-        // --- СЛУЧАЙ 1: Блок в базе (например, "право") ---
-        // Двигаем СТАРТ
-        editor.SetBlock(A_neighbor.x, A_neighbor.y, A_neighbor.z, idA);
-        editor.SetBlock(A.x, A.y, A.z, 0);
-
-        // Двигаем ЭНД вместе с ним!
-        const idB = editor.GetBlockId(B.x, B.y, B.z);
-        if (idB !== 0) {
-            editor.SetBlock(B_neighbor.x, B_neighbor.y, B_neighbor.z, idB);
-            editor.SetBlock(B.x, B.y, B.z, 0);
+            room.MapEditor.SetBlock(source.x, source.y, source.z, 28);
+            room.MapEditor.SetBlock(target.x, target.y, target.z, 1);
         }
-    } else {
-        // --- СЛУЧАЙ 2: В базе пусто, ищем в соседе (например, "лево") ---
-        const idA_side = editor.GetBlockId(A_neighbor.x, A_neighbor.y, A_neighbor.z);
-        
-        if (idA_side !== 0) {
-            // Возвращаем СТАРТ на базу
-            editor.SetBlock(A.x, A.y, A.z, idA_side);
-            editor.SetBlock(A_neighbor.x, A_neighbor.y, A_neighbor.z, 0);
-
-            // Возвращаем ЭНД на базу вместе с ним!
-            const idB_side = editor.GetBlockId(B_neighbor.x, B_neighbor.y, B_neighbor.z);
-            if (idB_side !== 0) {
-                editor.SetBlock(B.x, B.y, B.z, idB_side);
-                editor.SetBlock(B_neighbor.x, B_neighbor.y, B_neighbor.z, 0);
-            }
-        }
-    }
-    }
-
 
         reverse = !reverse;
     });
