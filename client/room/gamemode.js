@@ -129,10 +129,10 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
 
             const sourceid = room.MapEditor.GetBlockId(source.x, source.y, source.z);
             const targetid = room.MapEditor.GetBlockId(target.x, target.y, target.z);
-            room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
-            room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
-            //room.MapEditor.SetBlock(range.Start.x, range.Start.y, range.Start.z, 1);
-            //room.MapEditor.SetBlock(range.End.x, range.End.y, range.End.z, 28);
+            //room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
+            //room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
+            room.MapEditor.SetBlock(range.Start.x, range.Start.y, range.Start.z, 1);
+            room.MapEditor.SetBlock(range.End.x, range.End.y, range.End.z, 28);
         }
 
         reverse = !reverse;
