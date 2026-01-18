@@ -132,7 +132,7 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
             //room.MapEditor.SetBlock(source.x, source.y, source.z, targetid);
             //room.MapEditor.SetBlock(target.x, target.y, target.z, sourceid);
             room.MapEditor.SetBlock(range.Start.x, range.Start.y, range.Start.z, 1);
-            room.MapEditor.SetBlock(range.End.x, range.End.y, range.End.z, 28);
+            room.MapEditor.SetBlock(end.x, end.y, end.z, 28);
         }
 
         reverse = !reverse;
