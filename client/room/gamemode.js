@@ -104,7 +104,7 @@ if (room.GameMode.Parameters.GetBool(ViewSpawnsParameterName)) {
 }
 
 // настраиваем динамический блок
-const AllRanges = [];
+/*const AllRanges = [];
 
 function diagonal(start, end, direction = { x: 1, y: 0, z: 1 }) {
     const size = {
@@ -131,14 +131,14 @@ function diagonal(start, end, direction = { x: 1, y: 0, z: 1 }) {
             z: end.z + offset.z
         }
     };
-}
+}*/
 
 if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
     const dynamicTrigger = room.AreaPlayerTriggerService.Get("DynamicTrigger");
     dynamicTrigger.Tags = [DynamicBlockAreasTag];
     dynamicTrigger.Enable = true;
 
-    let reverse = false;
+    /*let reverse = false;
 
     dynamicTimer.OnTimer.Add(function () {
         if (stateProp.Value == EndOfMatchStateValue) {
@@ -164,7 +164,93 @@ if (room.GameMode.Parameters.GetBool(AddDynamicBlockParameterName)) {
         }
 
         reverse = !reverse;
-    });
+    });*/
+
+    // Ваша функция 'diagonal' (я использую имя shiftZoneOptimized)
+function shiftZoneOptimized(start, end, direction = { x: 1, y: 1, z: 1 }) {
+    const offsetX = (Math.abs(end.x - start.x)) * (direction.x || 0);
+    const offsetY = (Math.abs(end.y - start.y)) * (direction.y || 0);
+    const offsetZ = (Math.abs(end.z - start.z)) * (direction.z || 0);
+
+    return {
+        start: {
+            x: start.x + offsetX,
+            y: start.y + offsetY,
+            z: start.z + offsetZ
+        },
+        end: {
+            x: end.x + offsetX,
+            y: end.y + offsetY,
+            z: end.z + offsetZ
+        }
+    };
+}
+
+// Ваш главный код
+let reverse = false; // Переключатель, который определяет, с какого угла начинаем ставить/убирать блоки
+
+dynamicTimer.OnTimer.Add(function () {
+    if (stateProp.Value == EndOfMatchStateValue) {
+        dynamicTimer.Stop();
+        return;
+    }
+
+    const area = room.AreaService.Get(DynamicBlockAreasTag);
+    // Для отладки: room.Ui.GetContext().Hint.Value = JSON.stringify(area.Ranges.All[0]);
+
+    for (let i = 0; i < area.Ranges.All.length; i++) {
+        const range = area.Ranges.All[i];
+        
+        // Корректируем range.End, если он эксклюзивный (т.е. на 1 больше последнего блока)
+        // Это важно для GetBlockId и SetBlock, которые оперируют конкретными блоками.
+        const actualEndBlock = { 
+            x: range.End.x - 1, 
+            y: range.End.y - 1, 
+            z: range.End.z - 1 
+        };
+
+        // Определяем "источник" и "цель" для проверки/установки блоков
+        // исходя из значения reverse.
+        // Если reverse true, то "источник" - это actualEndBlock, а "цель" - range.Start.
+        // Иначе - наоборот.
+        const sourceBlockCoord = reverse ? actualEndBlock : range.Start;
+        const targetBlockCoord = reverse ? range.Start : actualEndBlock;
+
+        // Определяем направление сдвига для ВСЕЙ ЗОНЫ.
+        // Допустим, вы всегда хотите сдвигать зону по полной 3D-диагонали в "положительном" направлении
+        // Если вам нужно другое направление, измените этот объект.
+        const zoneShiftDirection = { x: 1, y: 1, z: 1 }; 
+        
+        // Вычисляем новые границы ЗОНЫ. Здесь мы используем оригинальные range.Start и range.End
+        // так как shiftZoneOptimized корректно работает с ними для определения размера зоны.
+        const newZoneCoordinates = shiftZoneOptimized(range.Start, range.End, zoneShiftDirection);
+
+        // --- Логика проверки и установки блоков ---
+
+        // Проверяем, пусты ли текущие "источник" и "цель" блоки.
+        // Это условие означает: "Если оба угла (sourceBlockCoord и targetBlockCoord) текущей зоны пусты..."
+        if (room.MapEditor.GetBlockId(sourceBlockCoord.x, sourceBlockCoord.y, sourceBlockCoord.z) == 0 && 
+            room.MapEditor.GetBlockId(targetBlockCoord.x, targetBlockCoord.y, targetBlockCoord.z) == 0) 
+        {
+            // Если они пусты, мы устанавливаем блоки в СДВИНУТЫХ координатах (newZoneCoordinates).
+            // При этом мы снова используем reverse для выбора, какой из углов сдвинутой зоны
+            // будет Block 1 и какой Block 28.
+            
+            const block1Coord = reverse ? newZoneCoordinates.end : newZoneCoordinates.start;
+            const block28Coord = reverse ? newZoneCoordinates.start : newZoneCoordinates.end;
+
+            room.MapEditor.SetBlock(block1Coord.x, block1Coord.y, block1Coord.z, 1);
+            room.MapEditor.SetBlock(block28Coord.x, block28Coord.y, block28Coord.z, 28);
+        }
+        // !!! Дополнительно: Если вы хотите, чтобы reverse также очищал/менял блоки в ИСХОДНОЙ зоне,
+        // а не только влиял на то, где рисовать новые, то вам нужно добавить логику здесь.
+        // Например, очистка:
+        // room.MapEditor.SetBlock(sourceBlockCoord.x, sourceBlockCoord.y, sourceBlockCoord.z, 0);
+        // room.MapEditor.SetBlock(targetBlockCoord.x, targetBlockCoord.y, targetBlockCoord.z, 0);
+    }
+
+    reverse = !reverse; // Переключаем значение reverse для следующего тика
+});
 
     dynamicTimer.RestartLoop(3);
     room.Ui.GetContext().MainTimerId.Value = dynamicTimer.Id;
